@@ -91,7 +91,7 @@ const DayDetails = () => {
             percentsOfDay: percentsOfDay,
         };
     };
-    console.log(sunRiseToSunSet().percentsOfDay);
+
     return (
         <div
             className={`top-[75%] w-[80%] px-[30px] py-[10px] rounded-[6px] border-black boredr-[1px] bg-sky-800`}
