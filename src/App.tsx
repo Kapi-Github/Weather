@@ -75,7 +75,6 @@ function App() {
         navigator.permissions
             .query({ name: "geolocation" })
             .then((permissions) => {
-                console.log(permissions);
                 switch (permissions.state) {
                     case "denied":
                         getData("London");
@@ -83,6 +82,8 @@ function App() {
                     case "granted":
                         getUserCity();
                         break;
+                    default:
+                        getData("London");
                 }
 
                 permissions.addEventListener("change", () => {
