@@ -32,7 +32,7 @@ const HoursChart = () => {
 
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (!active || !payload.length) return null;
-
+        console.log(label);
         return <div>{payload[0].payload.temp_c}</div>;
     };
 
