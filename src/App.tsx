@@ -3,7 +3,7 @@ import axios from "axios";
 import DayInfo from "./Components/DayInfo";
 import Loading from "./Assets/Loading";
 import WeatherInfo from "./Components/WeatherInfo";
-import DayDetails from "./Components/DayDetails";
+import DayDetails from "./Components/DayDetails/DayDetails";
 
 interface TemperatureInterface {
     weather: any;
@@ -17,8 +17,11 @@ export const TemperatureContext = createContext<TemperatureInterface>(
     {} as TemperatureInterface
 );
 
-function App() {
-    const API_KEY = "e9348d9812c5496f86f205401230411";
+interface Props {
+    apikey: string;
+}
+
+function App(props: Props) {
     const headers = {
         Vary: "Accept-Encoding",
         "CDN-PullZone": "93447",
@@ -47,7 +50,7 @@ function App() {
     async function getData(currentCity: string) {
         setCity(currentCity);
         const res = await axios.get(
-            `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${currentCity}&days=7&aqi=no&alerts=no`,
+            `https://api.weatherapi.com/v1/forecast.json?key=${props.apikey}&q=${currentCity}&days=7&aqi=no&alerts=no`,
             { headers: headers }
         );
         setWeather(res.data);
