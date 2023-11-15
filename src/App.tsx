@@ -50,29 +50,39 @@ function App(props: Props) {
     async function getData(currentCity: string) {
         setCity(currentCity);
         const res = await axios.get(
-            `https://api.weatherapi.com/v1/forecast.json?key=${props.apikey}&q=${currentCity}&days=7&aqi=no&alerts=no`,
+            `https://api.weatherapi.com/v1/forecast.json?key=${props.apikey}&q=${currentCity}&days=7&aqi=no&alerts=no&lang=pl`,
             { headers: headers }
         );
-        setWeather(res.data);
+
+        if (res.status === 200) {
+            console.log(res.data);
+            setWeather(res.data);
+        } else {
+            throw new Error("API connection error");
+        }
     }
 
-    const getUserCity = () => {
+    function getUserCity() {
         navigator.geolocation.getCurrentPosition(
-            (position) => {
+            async (position) => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
 
-                axios
-                    .get(
-                        `https://eu1.locationiq.com/v1/reverse?key=pk.634b9024bf19dacc9e07c3b9cfd5b589&lat=${lat}&lon=${lng}&format=json`
-                    )
-                    .then((res) => getData(res.data.address.village));
+                const res = await axios.get(
+                    `https://eu1.locationiq.com/v1/reverse?key=pk.634b9024bf19dacc9e07c3b9cfd5b589&lat=${lat}&lon=${lng}&format=json`
+                );
+
+                if (res.status === 200) {
+                    getData(res.data.address.village);
+                } else {
+                    getData("London");
+                }
             },
             (error) => {
                 console.log("API connection error:", error);
             }
         );
-    };
+    }
 
     useEffect(() => {
         navigator.permissions
@@ -105,7 +115,7 @@ function App(props: Props) {
 
     return (
         <div
-            className={`flex flex-col gap-[40px] justify-center items-center w-[100%] h-[100%] bg-gradient-to-b from-sky-700 to-blue-950 p-[10px] relative text-slate-300`}
+            className={`flex flex-col gap-[40px] justify-center items-center w-[100%] h-[100%] p-[10px] relative text-slate-300 min-h-[100vh]`}
         >
             {!weather ? (
                 <Loading />

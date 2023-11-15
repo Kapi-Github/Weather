@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { TemperatureContext } from "../../App";
 import { months } from "../DayInfo";
-import { daysInWeek } from "../WeatherInfo";
 import { Icon } from "@iconify/react";
 import HoursChart from "../HoursChart";
 import "./DayDetails.css";
+import { scrollChart } from "../WeatherInfo";
 
 interface HoursInterface {
     sunrise: string;
@@ -25,7 +25,7 @@ const DayDetails = () => {
             hour = "0" + hour;
         }
         if (parseInt(minute) < 10) {
-            hour = "0" + hour;
+            minute = "0" + minute;
         }
         return <>{hour + ":" + minute}</>;
     };
@@ -119,31 +119,17 @@ const DayDetails = () => {
     };
 
     return (
-        <div
-            className={`top-[75%] w-[80%] rounded-[6px] border-black boredr-[1px] bg-sky-800`}
-        >
-            <div className={`flex gap-[10px] mx-[30px] my-[15px]`}>
-                <div
-                    className={`w-[40%] h-[100%] flex flex-col justify-around`}
-                >
-                    <div className={`text-[2rem]`}>
-                        <b>{date.day} </b> <span>{months[date.month - 1]}</span>
-                    </div>
-                    <div className={`text-[1.3rem]`}>
-                        {
-                            daysInWeek[
-                                new Date(
-                                    date.year,
-                                    date.month - 1,
-                                    date.day
-                                ).getDay()
-                            ].fullDayName
-                        }
+        <div className={`top-[75%] w-[90%] rounded-[6px] bg-sky-800`}>
+            <div
+                className={`flex flex-wrap sm:flex-nowrap gap-[10px] mx-[30px] my-[15px]`}
+            >
+                <div className={`w-[100%] sm:w-[40%] flex sm:flex-col`}>
+                    <div className={`text-[2rem] flex gap-[8px]`}>
+                        <b>{date.day} </b>
+                        <span> {months[date.month - 1]} </span>
                     </div>
                 </div>
-                <div
-                    className={`w-[60%] max-w-[400px] min-w-[270px] grid grid-rows-3`}
-                >
+                <div className={`w-[100%] sm:w-[60%] grid grid-rows-3`}>
                     <div
                         style={{
                             gridTemplateColumns: "30% 40% 30%",
@@ -218,8 +204,24 @@ const DayDetails = () => {
                     </div>
                 </div>
             </div>
-            <div className={`w-[100%] overflow-x-scroll`}>
-                <HoursChart />
+            <div className={`flex justify-center w-[100%] relative`}>
+                <button
+                    className={`absolute left-0 translate-x-[-50%] top-[40%] translate-y-[-50%] z-10 bg-sky-600 rounded-full p-[3px] opacity-70`}
+                    onClick={() => scrollChart("left", ".chart__field")}
+                >
+                    <Icon icon="bxs:left-arrow" />
+                </button>
+                <button
+                    className={`absolute left-full translate-x-[-50%] top-[40%] translate-y-[-50%] z-10 bg-sky-600 rounded-full p-[3px] opacity-70`}
+                    onClick={() => scrollChart("right", ".chart__field")}
+                >
+                    <Icon icon="bxs:left-arrow" rotate={2} />
+                </button>
+                <div
+                    className={`w-[100%] mx-[20px] chart__field overflow-x-scroll`}
+                >
+                    <HoursChart />
+                </div>
             </div>
         </div>
     );
