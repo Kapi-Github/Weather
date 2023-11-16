@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { TemperatureContext } from "../App";
+import { Icon } from "@iconify/react";
 
 interface Props {
     city: string | null;
@@ -21,7 +22,7 @@ export const months = [
 ];
 
 const DayInfo = ({ city }: Props) => {
-    const { weather, temperatureUnit, setTemperatureUnit } =
+    const { weather, temperatureUnit, setTemperatureUnit, setCityToEdit } =
         useContext(TemperatureContext);
 
     const todayDate = {
@@ -34,8 +35,19 @@ const DayInfo = ({ city }: Props) => {
 
     return (
         <div className={`w-[100%] flex flex-col items-center`}>
-            <div>
-                <span className={`text-[3rem]`}>{city}</span>
+            <div className={`flex`}>
+                <div className={`text-[3rem] flex items-center gap-[10px]`}>
+                    <span>{city}</span>
+                    <hr className={`border-[1px] border-sky-900 h-[50%]`} />
+                    <div className={`h-[100%] flex items-center`}>
+                        <Icon
+                            icon="mdi:search"
+                            width={36}
+                            className={`cursor-pointer`}
+                            onClick={() => setCityToEdit((prev) => !prev)}
+                        />
+                    </div>
+                </div>
             </div>
             <div>
                 {todayDate.day} {months[todayDate.month - 1]} {todayDate.year}

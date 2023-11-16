@@ -11,6 +11,7 @@ interface TemperatureInterface {
     setTemperatureUnit: React.Dispatch<SetStateAction<string>>;
     active: number;
     setActive: React.Dispatch<SetStateAction<number>>;
+    setCityToEdit: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export const TemperatureContext = createContext<TemperatureInterface>(
@@ -46,6 +47,9 @@ function App(props: Props) {
     const [weather, setWeather] = useState<any>(null);
     const [temperatureUnit, setTemperatureUnit] = useState<string>("C");
     const [active, setActive] = useState<number>(0);
+
+    const [cityToEdit, setCityToEdit] = useState<boolean>(false);
+    const [newCity, setNewCity] = useState<string>("");
 
     async function getData(currentCity: string) {
         setCity(currentCity);
@@ -127,8 +131,25 @@ function App(props: Props) {
                         setTemperatureUnit,
                         active,
                         setActive,
+                        setCityToEdit,
                     }}
                 >
+                    {cityToEdit && (
+                        <div
+                            className={`absolute top-0 rounded-[4px] bg-blue-950 px-[5px] py-[10px] flex flex-col gap-[10px] items-center`}
+                        >
+                            <input
+                                type="text"
+                                className={`bg-transparent outline-none text-center`}
+                                placeholder={city ? city : ""}
+                            />
+                            <button
+                                className={`bg-transparent rounded-[4px] hover:bg-[#1B2C62] transition-all duration-100 ease-in-out w-[100px]`}
+                            >
+                                Szukaj
+                            </button>
+                        </div>
+                    )}
                     <DayInfo city={city} />
                     <WeatherInfo />
                     <DayDetails />

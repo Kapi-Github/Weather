@@ -37,7 +37,7 @@ const HoursChart = () => {
 
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (!active || !payload.length) return null;
-        console.log(payload[0]);
+
         return (
             <div
                 className={`bg-blue-950 py-[3px] px-[5px] rounded-[4px] opacity-80 flex flex-col gap-[5px] max-w-[150px]`}
@@ -63,12 +63,14 @@ const HoursChart = () => {
                 <text
                     x={x}
                     y={y + 15}
-                    fill="#000"
+                    fill="#FFF"
                     textAnchor="middle"
                     dominantBaseline="middle"
                     opacity={0.7}
+                    className={`font-semibold text-[1rem]`}
                 >
                     {value}
+                    {"°"}
                 </text>
             </g>
         );
