@@ -49,7 +49,7 @@ function App(props: Props) {
     const [active, setActive] = useState<number>(0);
 
     const [cityToEdit, setCityToEdit] = useState<boolean>(false);
-    const [newCity, setNewCity] = useState<string>("");
+    // const [newCity, setNewCity] = useState<string>("");
 
     async function getData(currentCity: string) {
         setCity(currentCity);
