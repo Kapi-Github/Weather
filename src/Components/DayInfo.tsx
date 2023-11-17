@@ -36,7 +36,7 @@ const DayInfo = ({ city }: Props) => {
     return (
         <div className={`w-[100%] flex flex-col items-center`}>
             <div className={`flex`}>
-                <div className={`text-[3rem] flex items-center gap-[10px]`}>
+                <div className={`text-[2.5rem] flex items-center gap-[10px]`}>
                     <span>{city}</span>
                     <hr className={`border-[1px] border-sky-900 h-[50%]`} />
                     <div className={`h-[100%] flex items-center`}>

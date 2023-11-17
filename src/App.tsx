@@ -4,6 +4,7 @@ import DayInfo from "./Components/DayInfo";
 import Loading from "./Assets/Loading";
 import WeatherInfo from "./Components/WeatherInfo";
 import DayDetails from "./Components/DayDetails/DayDetails";
+import diacritics from "diacritics";
 
 interface TemperatureInterface {
     weather: any;
@@ -53,13 +54,13 @@ function App(props: Props) {
 
     async function getData(currentCity: string) {
         setCity(currentCity);
+        currentCity = diacritics.remove(currentCity);
         const res = await axios.get(
             `https://api.weatherapi.com/v1/forecast.json?key=${props.apikey}&q=${currentCity}&days=7&aqi=no&alerts=no&lang=pl`,
             { headers: headers }
         );
 
         if (res.status === 200) {
-            console.log(res.data);
             setWeather(res.data);
         } else {
             throw new Error("API connection error");
@@ -69,15 +70,16 @@ function App(props: Props) {
     function getUserCity() {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
+                let lat = position.coords.latitude;
+                let lng = position.coords.longitude;
 
                 const res = await axios.get(
-                    `https://eu1.locationiq.com/v1/reverse?key=pk.634b9024bf19dacc9e07c3b9cfd5b589&lat=${lat}&lon=${lng}&format=json`
+                    `https://eu1.locationiq.com/v1/reverse?key=pk.634b9024bf19dacc9e07c3b9cfd5b589&lat=${lat}&lon=${lng}&format=json&normalizeaddress=1&accept-language=en`
                 );
 
+                console.log(res.data);
                 if (res.status === 200) {
-                    getData(res.data.address.village);
+                    getData(res.data.address.city);
                 } else {
                     getData("London");
                 }
