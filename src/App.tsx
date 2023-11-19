@@ -104,20 +104,6 @@ function App(props: Props) {
     }, [cityToEdit]);
 
     useEffect(() => {
-        async function ip() {
-            try {
-                const response = await fetch(
-                    "https://api.ipify.org?format=json"
-                );
-                const data = await response.json();
-                const ipAddress = data.ip;
-                console.log(ipAddress);
-                return ipAddress;
-            } catch (error) {
-                console.error("Error fetching IP address:", error);
-            }
-        }
-        ip();
         if (city) {
             getData(city);
         } else {
