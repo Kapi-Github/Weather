@@ -1,10 +1,16 @@
-import { SetStateAction, createContext, useEffect, useState } from "react";
+import {
+    SetStateAction,
+    createContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import axios from "axios";
-import DayInfo from "./Components/DayInfo";
+import diacritics from "diacritics";
 import Loading from "./Assets/Loading";
+import DayInfo from "./Components/DayInfo";
 import WeatherInfo from "./Components/WeatherInfo";
 import DayDetails from "./Components/DayDetails/DayDetails";
-import diacritics from "diacritics";
 
 interface TemperatureInterface {
     weather: any;
@@ -44,16 +50,18 @@ function App(props: Props) {
         Server: "BunnyCDN-DE1-860",
     };
 
-    const [city, setCity] = useState<string | null>(null);
+    const cityInputRef = useRef<HTMLInputElement>(null);
+    const [city, setCity] = useState<string | null>(
+        localStorage.getItem("city")
+    );
     const [weather, setWeather] = useState<any>(null);
     const [temperatureUnit, setTemperatureUnit] = useState<string>("C");
     const [active, setActive] = useState<number>(0);
 
     const [cityToEdit, setCityToEdit] = useState<boolean>(false);
-    // const [newCity, setNewCity] = useState<string>("");
+    const [newCity, setNewCity] = useState<string | null>(null);
 
     async function getData(currentCity: string) {
-        setCity(currentCity);
         currentCity = diacritics.remove(currentCity);
         const res = await axios.get(
             `https://api.weatherapi.com/v1/forecast.json?key=${props.apikey}&q=${currentCity}&days=7&aqi=no&alerts=no&lang=pl`,
@@ -61,6 +69,8 @@ function App(props: Props) {
         );
 
         if (res.status === 200) {
+            setCity(currentCity);
+            localStorage.setItem("city", currentCity);
             setWeather(res.data);
         } else {
             throw new Error("API connection error");
@@ -77,7 +87,6 @@ function App(props: Props) {
                     `https://eu1.locationiq.com/v1/reverse?key=pk.634b9024bf19dacc9e07c3b9cfd5b589&lat=${lat}&lon=${lng}&format=json&normalizeaddress=1&accept-language=en`
                 );
 
-                console.log(res.data);
                 if (res.status === 200) {
                     getData(res.data.address.city);
                 } else {
@@ -91,22 +100,16 @@ function App(props: Props) {
     }
 
     useEffect(() => {
-        navigator.permissions
-            .query({ name: "geolocation" })
-            .then((permissions) => {
-                switch (permissions.state) {
-                    case "denied":
-                        getData("London");
-                        break;
-                    case "granted":
-                        getUserCity();
-                        break;
-                    default:
-                        getData("London");
-                }
+        cityInputRef.current?.focus();
+    }, [cityToEdit]);
 
-                permissions.addEventListener("change", () => {
-                    setWeather(null);
+    useEffect(() => {
+        if (city) {
+            getData(city);
+        } else {
+            navigator.permissions
+                .query({ name: "geolocation" })
+                .then((permissions) => {
                     switch (permissions.state) {
                         case "denied":
                             getData("London");
@@ -114,10 +117,48 @@ function App(props: Props) {
                         case "granted":
                             getUserCity();
                             break;
+                        default:
+                            getData("London");
                     }
+
+                    permissions.addEventListener("change", () => {
+                        setWeather(null);
+                        switch (permissions.state) {
+                            case "denied":
+                                getData("London");
+                                break;
+                            case "granted":
+                                getUserCity();
+                                break;
+                        }
+                    });
                 });
-            });
+        }
     }, [city]);
+
+    useEffect(() => {
+        if (cityToEdit) {
+            const handler = (event: MouseEvent) => {
+                if (document.querySelector(".modal__bg") === event.target) {
+                    setCityToEdit(false);
+                }
+            };
+
+            addEventListener("click", handler);
+            return () => {
+                removeEventListener("click", handler);
+            };
+        }
+    }, [cityToEdit]);
+
+    const searchCity = () => {
+        if (newCity) {
+            getData(newCity);
+            setNewCity(null);
+            setActive(0);
+            setCityToEdit((prev) => !prev);
+        }
+    };
 
     return (
         <div
@@ -136,21 +177,40 @@ function App(props: Props) {
                         setCityToEdit,
                     }}
                 >
-                    {cityToEdit && (
-                        <div
-                            className={`absolute top-0 rounded-[4px] bg-blue-950 px-[5px] py-[10px] flex flex-col gap-[10px] items-center`}
-                        >
-                            <input
-                                type="text"
-                                className={`bg-transparent outline-none text-center`}
-                                placeholder={city ? city : ""}
-                            />
+                    <div
+                        className={`${
+                            cityToEdit ? "translate-y-[0%] " : ""
+                        }modal absolute top-0 translate-y-[-150%] rounded-b-[4px] bg-blue-950 transition-all duration-200 flex flex-col gap-[10px] items-center px-[5px] py-[10px] ease-in-out shadow-[0_0px_15px_0px_rgb(255,255,255)] text-white z-50`}
+                    >
+                        <input
+                            type="text"
+                            className={`bg-transparent outline-none text-center`}
+                            placeholder={city ? city : ""}
+                            value={newCity ? newCity : ""}
+                            onChange={(event) => setNewCity(event.target.value)}
+                            ref={cityInputRef}
+                            onKeyDown={(event) =>
+                                event.code === "Enter" && searchCity()
+                            }
+                        />
+                        <hr className={`border-white w-[90%]`} />
+                        <div className={`flex`}>
                             <button
                                 className={`bg-transparent rounded-[4px] hover:bg-[#1B2C62] transition-all duration-100 ease-in-out w-[100px]`}
+                                onClick={() => searchCity()}
                             >
                                 Szukaj
                             </button>
+                            <button
+                                className={`bg-transparent rounded-[4px] hover:bg-[#1B2C62] transition-all duration-100 ease-in-out w-[100px]`}
+                                onClick={() => setCityToEdit((prev) => !prev)}
+                            >
+                                Anuluj
+                            </button>
                         </div>
+                    </div>
+                    {cityToEdit && (
+                        <div className="modal__bg h-screen w-screen opacity-30 absolute top-0 z-40 bg-[#3a3939]"></div>
                     )}
                     <DayInfo city={city} />
                     <WeatherInfo />

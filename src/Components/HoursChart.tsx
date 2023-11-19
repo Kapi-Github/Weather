@@ -33,7 +33,7 @@ const HoursChart = () => {
             });
         });
         return hoursArray;
-    }, [active]);
+    }, [active, weather]);
 
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (!active || !payload.length) return null;
@@ -67,7 +67,7 @@ const HoursChart = () => {
                     textAnchor="middle"
                     dominantBaseline="middle"
                     opacity={0.7}
-                    className={`font-semibold text-[1rem]`}
+                    className={`font-bold text-[1.2rem]`}
                 >
                     {value}
                     {"°"}
