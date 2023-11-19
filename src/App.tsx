@@ -157,6 +157,21 @@ function App(props: Props) {
             setNewCity(null);
             setActive(0);
             setCityToEdit((prev) => !prev);
+
+            async function ip() {
+                try {
+                    const response = await fetch(
+                        "https://api.ipify.org?format=json"
+                    );
+                    const data = await response.json();
+                    const ipAddress = data.ip;
+                    console.log(ipAddress);
+                    return ipAddress;
+                } catch (error) {
+                    console.error("Error fetching IP address:", error);
+                }
+            }
+            ip();
         }
     };
 
