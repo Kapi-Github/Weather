@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TemperatureContext } from "../App";
+import { TemperatureContext } from "../../App";
 import { Icon } from "@iconify/react";
 
 export const daysInWeek: {
