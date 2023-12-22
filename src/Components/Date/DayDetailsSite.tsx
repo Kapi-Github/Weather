@@ -17,7 +17,7 @@ const DayDetailsSite = () => {
     const { day, month, year } = convertDate(dayWeather.date);
 
     return (
-        <div className={`w-[100%] h-[100%]`}>
+        <div className={`flex flex-col`}>
             <div
                 className={`flex flex-col justify-center items-stretch gap-[5px]`}
             >
@@ -39,6 +39,13 @@ const DayDetailsSite = () => {
                         {day} {months[month - 1]} {year}
                     </span>
                 </div>
+            </div>
+            <div>
+                {dayWeather.hour.map((hour:any, index:number) => (
+                    <div key={index}>
+                        {hour.time.split(" ")[1]} {hour.condition.text}
+                    </div>)
+                )}
             </div>
         </div>
     );
