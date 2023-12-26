@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { TemperatureContext } from "../../App";
 import { convertDate } from "../Main/DayDetails/DayDetails";
-import { months } from "../Main/DayInfo";
+import { months } from "../Main/Header/DayInfo";
+import HoursList from "./Date/HoursList";
 
 const DayDetailsSite = () => {
     const { date } = useParams();
@@ -12,12 +13,10 @@ const DayDetailsSite = () => {
         (day: any) => day.date === date
     );
 
-    console.log(dayWeather);
-
     const { day, month, year } = convertDate(dayWeather.date);
 
     return (
-        <div className={`flex flex-col`}>
+        <div className={`flex flex-col gap-[40px] w-[100%]`}>
             <div
                 className={`flex flex-col justify-center items-stretch gap-[5px]`}
             >
@@ -40,13 +39,7 @@ const DayDetailsSite = () => {
                     </span>
                 </div>
             </div>
-            <div>
-                {dayWeather.hour.map((hour:any, index:number) => (
-                    <div key={index}>
-                        {hour.time.split(" ")[1]} {hour.condition.text}
-                    </div>)
-                )}
-            </div>
+            <HoursList dayWeather={dayWeather} />
         </div>
     );
 };

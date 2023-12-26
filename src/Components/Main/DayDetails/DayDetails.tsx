@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
-import { scrollChart } from "../WeatherInfo";
+import { scrollChart } from "../Header/WeatherInfo";
 import { TemperatureContext } from "../../../App";
-import { months } from "../DayInfo";
-import HoursChart from "../HoursChart";
+import { months } from "../Header/DayInfo";
+import HoursChart from "./HoursChart";
 import "./DayDetails.css";
 
 interface HoursInterface {
@@ -116,7 +116,9 @@ const DayDetails = () => {
     };
 
     return (
-        <div className={`top-[75%] w-[90%] rounded-[6px] bg-sky-800`}>
+        <div
+            className={`top-[75%] w-[90%] rounded-[6px] bg-sky-800 shadow-[0_0_20px_-10px_rgb(255,255,255)]`}
+        >
             <div
                 className={`flex flex-wrap sm:flex-nowrap gap-[10px] mx-[30px] my-[15px]`}
             >
@@ -128,7 +130,7 @@ const DayDetails = () => {
                         <span> {months[month - 1]} </span>
                     </div>
                     <div className={`flex justify-start items-center`}>
-                        <span className={`text-[20px]`}>
+                        <span>
                             <Link to={`/date/${year}-${month}-${day}`}>
                                 <span className={`text-[20px]`}>Szczegóły</span>
                             </Link>

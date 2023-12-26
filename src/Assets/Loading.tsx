@@ -1,7 +1,7 @@
+import "./Loading.css";
+
 const Loading = () => {
-    return (
-        <div className="border-gray-300 h-[40px] w-[40px] animate-spin rounded-full border-8 border-t-blue-600" />
-    );
+    return <div className="custom-loader"></div>;
 };
 
 export default Loading;

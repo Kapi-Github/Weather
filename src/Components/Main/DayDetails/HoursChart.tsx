@@ -9,7 +9,7 @@ import {
     LabelList,
     Dot,
 } from "recharts";
-import { TemperatureContext } from "../../App";
+import { TemperatureContext } from "../../../App";
 
 interface HoursChartInterface {
     hour: string;

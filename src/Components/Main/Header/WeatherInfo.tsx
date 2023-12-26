@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TemperatureContext } from "../../App";
+import { TemperatureContext } from "../../../App";
 import { Icon } from "@iconify/react";
 
 export const daysInWeek: {
@@ -66,7 +66,7 @@ const WeatherInfo = () => {
                             return (
                                 <div
                                     key={index}
-                                    className={`bg-sky-800 flex flex-col items-center rounded-[8px] p-[5px] cursor-pointer transition-all duration-200 ease-in-out min-w-[85px] w-[calc(100%/7)] ${
+                                    className={`bg-sky-800 flex flex-col items-center rounded-[8px] p-[5px] cursor-pointer transition-all duration-200 ease-in-out min-w-[85px] w-[calc(100%/7)] shadow-[0_0_20px_-12px_rgb(255,255,255)] ${
                                         active === index
                                             ? "bg-slate-500"
                                             : "hover:bg-[#075D8E] "

@@ -1,11 +1,12 @@
 import { SetStateAction, createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import diacritics from "diacritics";
 import Loading from "./Assets/Loading";
 import DayDetailsSite from "./Components/Date/DayDetailsSite";
 import MainSite from "./Components/Main/MainSite";
 import NotFound from "./Components/NotFound/NotFound";
+import HourDetailsSite from "./Components/Date/Hour/HourDetailsSite";
 
 interface TemperatureInterface {
     city: string | null;
@@ -152,11 +153,13 @@ function App(props: Props) {
                     <Routes>
                         <Route path={`/`} element={<MainSite />} />
 
-                        <Route
-                            path={"/date/:date"}
-                            element={<DayDetailsSite />}
-                        />
-
+                        <Route path={"date/:date"} element={<Outlet />}>
+                            <Route index element={<DayDetailsSite />} />
+                            <Route
+                                path={`hour/:hour`}
+                                element={<HourDetailsSite />}
+                            />
+                        </Route>
                         <Route path={`*`} element={<NotFound />} />
                     </Routes>
                 </TemperatureContext.Provider>

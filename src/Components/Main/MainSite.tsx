@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import DayDetails from "./DayDetails/DayDetails";
-import WeatherInfo from "./WeatherInfo";
-import DayInfo from "./DayInfo";
+import WeatherInfo from "./Header/WeatherInfo";
+import DayInfo from "./Header/DayInfo";
 import { TemperatureContext } from "../../App";
 
 const MainSite = () => {
