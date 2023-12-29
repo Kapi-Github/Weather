@@ -32,7 +32,7 @@ const HoursChart = () => {
                         temp_c: hour.temp_c,
                         temp_f: hour.temp_f,
                         description: hour.condition.text,
-                        wind: hour.wind_kph,
+                        wind: hour.gust_kph,
                     });
                 }
             }
