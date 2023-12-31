@@ -9,8 +9,14 @@ const MainSite = () => {
 
     const [newCity, setNewCity] = useState<string | null>(null);
 
-    const { city, setActive, getData, isCityToEdit, setIsCityToEdit } =
-        useContext(TemperatureContext);
+    const {
+        city,
+        setActive,
+        getData,
+        isCityToEdit,
+        setIsCityToEdit,
+        setWeather,
+    } = useContext(TemperatureContext);
 
     useEffect(() => {
         cityInputRef.current?.focus();
@@ -31,6 +37,7 @@ const MainSite = () => {
 
     const searchCity = () => {
         if (newCity) {
+            setWeather(null);
             getData(newCity);
             setNewCity(null);
             setActive(0);

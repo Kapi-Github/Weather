@@ -17,9 +17,12 @@ const themes = {
 };
 
 export const convertDate = (dateToFormat: string) => {
+    const day = parseInt(dateToFormat.split(" ")[0].split("-")[2]);
+    const month = parseInt(dateToFormat.split(" ")[0].split("-")[1]);
+
     return {
-        day: parseInt(dateToFormat.split(" ")[0].split("-")[2]),
-        month: parseInt(dateToFormat.split(" ")[0].split("-")[1]),
+        day: day > 10 ? day.toString() : "0" + day,
+        month: month > 10 ? month.toString() : "0" + month,
         year: parseInt(dateToFormat.split(" ")[0].split("-")[0]),
     };
 };
@@ -76,16 +79,16 @@ const DayDetails = () => {
 
         const sunRiseHour = new Date(
             year,
-            month - 1,
-            day,
+            parseInt(month) - 1,
+            parseInt(day),
             parseInt(hours.sunrise.split(":")[0]),
             parseInt(hours.sunrise.split(":")[1])
         ).getTime();
 
         const sunSetHour = new Date(
             year,
-            month - 1,
-            day,
+            parseInt(month) - 1,
+            parseInt(day),
             parseInt(hours.sunset.split(":")[0]),
             parseInt(hours.sunset.split(":")[1])
         ).getTime();
@@ -127,7 +130,7 @@ const DayDetails = () => {
                 >
                     <div className={`text-[2rem] flex gap-[8px]`}>
                         <b>{day} </b>
-                        <span> {months[month - 1]} </span>
+                        <span> {months[parseInt(month) - 1]} </span>
                     </div>
                     <div className={`flex justify-start items-center`}>
                         <span>

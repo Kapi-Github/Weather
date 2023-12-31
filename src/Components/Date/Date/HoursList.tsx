@@ -22,8 +22,6 @@ const HoursList = ({ dayWeather }: Props) => {
         { source: "cloud", unit: "%", image: "bi:clouds-fill" },
     ];
 
-    console.log(dayWeather.hour[2].cloud);
-
     return (
         <div className={`flex flex-col items-center w-[100%]`}>
             {dayWeather.hour.map((hour: any, index: number) => (

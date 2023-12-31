@@ -11,6 +11,7 @@ import HourDetailsSite from "./Components/Date/Hour/HourDetailsSite";
 interface TemperatureInterface {
     city: string | null;
     weather: any;
+    setWeather: React.Dispatch<SetStateAction<any>>;
     temperatureUnit: string;
     setTemperatureUnit: React.Dispatch<SetStateAction<string>>;
     active: number;
@@ -76,25 +77,33 @@ function App(props: Props) {
     }
 
     function getUserCity() {
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                let lat = position.coords.latitude;
-                let lng = position.coords.longitude;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    let lat = position.coords.latitude;
+                    let lng = position.coords.longitude;
 
-                const res = await axios.get(
-                    `https://eu1.locationiq.com/v1/reverse?key=pk.634b9024bf19dacc9e07c3b9cfd5b589&lat=${lat}&lon=${lng}&format=json&normalizeaddress=1&accept-language=en`
-                );
+                    const res = await axios.get(
+                        `https://eu1.locationiq.com/v1/reverse?key=pk.634b9024bf19dacc9e07c3b9cfd5b589&lat=${lat}&lon=${lng}&format=json&normalizeaddress=1&accept-language=en`
+                    );
 
-                if (res.status === 200) {
-                    getData(res.data.address.city);
-                } else {
-                    getData("London");
+                    if (res.status === 200) {
+                        getData(res.data.address.city);
+                    } else {
+                        getData("London");
+                    }
+                },
+                (error) => {
+                    console.log(
+                        "API connection error:",
+                        error,
+                        "Nie mozna pobrac lokalizacji"
+                    );
                 }
-            },
-            (error) => {
-                console.log("API connection error:", error);
-            }
-        );
+            );
+        } else {
+            //not supported by this browser
+        }
     }
 
     useEffect(() => {
@@ -141,6 +150,7 @@ function App(props: Props) {
                     value={{
                         city,
                         weather,
+                        setWeather,
                         temperatureUnit,
                         setTemperatureUnit,
                         active,

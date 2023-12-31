@@ -56,7 +56,7 @@ const HoursChart = () => {
                 </div>
                 <hr className={`border-gray-300`} />
                 <div>{payload[0].payload.description}</div>
-                <div>Wiatr: {payload[0].payload.wind}km/h</div>
+                <div>Wiatr: {payload[0].payload.wind} km/h</div>
             </div>
         );
     };
