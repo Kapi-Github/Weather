@@ -102,7 +102,7 @@ function App(props: Props) {
                 }
             );
         } else {
-            //not supported by this browser
+            //Geolocation is not supported by this browser
         }
     }
 
