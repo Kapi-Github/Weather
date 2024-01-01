@@ -35,7 +35,7 @@ const DayDetailsSite = () => {
                     <span
                         className={`text-[1.5rem] flex justify-center items-center`}
                     >
-                        {day} {months[month - 1]} {year}
+                        {day} {months[parseInt(month) - 1]} {year}
                     </span>
                 </div>
             </div>
