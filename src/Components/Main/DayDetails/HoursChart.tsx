@@ -92,11 +92,15 @@ const HoursChart = () => {
                         x2="0"
                         y2="1"
                     >
-                        <stop offset="5%" stopColor="#FFF" stopOpacity={0.8} />
                         <stop
-                            offset="90%"
-                            stopColor="#303030"
-                            stopOpacity={1}
+                            offset="5%"
+                            stopColor="#FFF000"
+                            stopOpacity={0.8}
+                        />
+                        <stop
+                            offset="95%"
+                            stopColor="#00FF00"
+                            stopOpacity={0.3}
                         />
                     </linearGradient>
                 </defs>
