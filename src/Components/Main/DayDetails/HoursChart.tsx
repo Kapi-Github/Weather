@@ -64,10 +64,10 @@ const HoursChart = () => {
     const DayTemperature = ({ x, y, value }: any) => {
         return (
             <g>
-                <Dot cx={x} cy={y} r={2} fill="black" />
+                <Dot cx={x} cy={y} r={4} fill="black" />
                 <text
-                    x={x + 20}
-                    y={y + 20}
+                    x={x}
+                    y={y - 15}
                     fill="#000"
                     textAnchor="middle"
                     dominantBaseline="middle"
@@ -82,8 +82,11 @@ const HoursChart = () => {
     };
 
     return (
-        <ResponsiveContainer minWidth={`600px`} width={`100%`} height={200}>
-            <AreaChart data={nextHours} margin={{ left: 20, right: 20 }}>
+        <ResponsiveContainer minWidth={`600px`} width={`100%`} height={250}>
+            <AreaChart
+                data={nextHours}
+                margin={{ left: 40, right: 40, top: 40 }}
+            >
                 <defs>
                     <linearGradient
                         id="temperature"
@@ -108,8 +111,9 @@ const HoursChart = () => {
                     dataKey="hour"
                     stroke="rgb(255, 255, 255)"
                     className={`text-[0.9rem]`}
+                    tickMargin={10}
                 />
-                <CartesianGrid strokeDasharray="4 4" />
+                <CartesianGrid strokeDasharray="4 4" opacity={0.7} />
                 <Tooltip content={<CustomTooltip />} />
                 <Area
                     type="monotone"

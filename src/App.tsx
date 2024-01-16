@@ -17,8 +17,6 @@ interface TemperatureInterface {
     active: number;
     setActive: React.Dispatch<SetStateAction<number>>;
     getData: (city: string) => void;
-    isCityToEdit: boolean;
-    setIsCityToEdit: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export const TemperatureContext = createContext<TemperatureInterface>(
@@ -53,8 +51,6 @@ function App(props: Props) {
     const [city, setCity] = useState<string | null>(
         localStorage.getItem("city")
     );
-
-    const [isCityToEdit, setIsCityToEdit] = useState<boolean>(false);
 
     const [weather, setWeather] = useState<any>(null);
     const [temperatureUnit, setTemperatureUnit] = useState<string>("C");
@@ -94,11 +90,7 @@ function App(props: Props) {
                     }
                 },
                 (error) => {
-                    console.log(
-                        "API connection error:",
-                        error,
-                        "Nie mozna pobrac lokalizacji"
-                    );
+                    console.log("API connection error:", error);
                 }
             );
         } else {
@@ -141,7 +133,7 @@ function App(props: Props) {
 
     return (
         <div
-            className={`flex flex-col gap-[40px] justify-center items-center w-[100%] h-[100%] p-[10px] relative text-slate-300 min-h-[100vh]`}
+            className={`flex flex-col gap-[30px] justify-center items-center w-[100%] h-[100%] px-[10px] py-[20px] relative text-slate-300 min-h-[100vh]`}
         >
             {!weather ? (
                 <Loading />
@@ -156,8 +148,6 @@ function App(props: Props) {
                         active,
                         setActive,
                         getData,
-                        isCityToEdit,
-                        setIsCityToEdit,
                     }}
                 >
                     <Routes>

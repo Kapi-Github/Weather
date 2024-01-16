@@ -21,8 +21,8 @@ export const convertDate = (dateToFormat: string) => {
     const month = parseInt(dateToFormat.split(" ")[0].split("-")[1]);
 
     return {
-        day: day > 10 ? day.toString() : "0" + day,
-        month: month > 10 ? month.toString() : "0" + month,
+        day: day >= 10 ? day.toString() : "0" + day,
+        month: month >= 10 ? month.toString() : "0" + month,
         year: parseInt(dateToFormat.split(" ")[0].split("-")[0]),
     };
 };
@@ -229,7 +229,7 @@ const DayDetails = () => {
                     <Icon icon="bxs:left-arrow" rotate={2} />
                 </button>
                 <div
-                    className={`w-[100%] mx-[20px] chart__field overflow-x-scroll`}
+                    className={`w-[100%] chart__field overflow-x-scroll py-[20px]`}
                 >
                     <HoursChart />
                 </div>

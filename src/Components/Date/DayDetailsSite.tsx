@@ -13,8 +13,6 @@ const DayDetailsSite = () => {
         (day: any) => day.date === date
     );
 
-    console.log(dayWeather);
-
     const { day, month, year } = convertDate(dayWeather.date);
 
     return (

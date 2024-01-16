@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TemperatureContext } from "../../../App";
 import { Icon } from "@iconify/react";
 
@@ -22,8 +22,17 @@ export const months = [
 ];
 
 const DayInfo = ({ city }: Props) => {
-    const { weather, temperatureUnit, setTemperatureUnit, setIsCityToEdit } =
-        useContext(TemperatureContext);
+    const {
+        weather,
+        setWeather,
+        getData,
+        setActive,
+        temperatureUnit,
+        setTemperatureUnit,
+    } = useContext(TemperatureContext);
+
+    const [newCity, setNewCity] = useState<string | null>(null);
+    const [isCityToEdit, setIsCityToEdit] = useState<boolean>(false);
 
     const todayDate = {
         day: parseInt(weather?.location.localtime.split(" ")[0].split("-")[2]),
@@ -33,20 +42,57 @@ const DayInfo = ({ city }: Props) => {
         year: weather?.location.localtime.split(" ")[0].split("-")[0],
     };
 
+    const searchCity = () => {
+        if (newCity) {
+            setWeather(null);
+            getData(newCity);
+            setNewCity(null);
+            setActive(0);
+        }
+    };
+
+    const cancelSearching = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        (event.target as HTMLInputElement).blur();
+        setNewCity(null);
+        setIsCityToEdit(false);
+    };
+
     return (
         <div className={`w-[100%] flex flex-col items-center`}>
-            <div className={`flex`}>
-                <div className={`text-[2.5rem] flex items-center gap-[10px]`}>
-                    <span>{city}</span>
-                    <hr className={`border-[1px] border-sky-900 h-[50%]`} />
-                    <div className={`h-[100%] flex items-center`}>
+            <div className={`flex flex-col gap-[10px]`}>
+                <div
+                    className={`flex transition duration-300 ease-in-out placeholder:text-gray-400 rounded-2xl border border-neutral-300 ${
+                        isCityToEdit && "border-black"
+                    }`}
+                >
+                    <input
+                        type="email"
+                        placeholder="Miejscowość"
+                        className={`city__input bg-transparent py-[12px] pl-6 pr-20 text-[16px] text-gray-200 outline-none`}
+                        value={newCity ? newCity : ""}
+                        onFocus={() => setIsCityToEdit((prev) => !prev)}
+                        onBlur={() => setIsCityToEdit((prev) => !prev)}
+                        onChange={(event) => setNewCity(event.target.value)}
+                        onKeyDown={(event) => {
+                            event.code === "Enter" && searchCity();
+                            event.code === "Escape" && cancelSearching(event);
+                        }}
+                    />
+                    <div
+                        className={`flex justify-center items-center border-l-[1px] w-[48px] aspect-square border-neutral-300 transition duration-300 ease-in-out ${
+                            isCityToEdit && "border-black"
+                        }`}
+                    >
                         <Icon
                             icon="mdi:search"
                             width={36}
                             className={`cursor-pointer`}
-                            onClick={() => setIsCityToEdit((prev) => !prev)}
+                            onClick={() => searchCity()}
                         />
                     </div>
+                </div>
+                <div className={`text-[32px] text-center py-[12px]`}>
+                    {city}
                 </div>
             </div>
             <div className={`flex gap-[30px]`}>
@@ -106,7 +152,6 @@ const DayInfo = ({ city }: Props) => {
                         </div>
                     </div>
                 </div>
-                <div></div>
             </div>
         </div>
     );
