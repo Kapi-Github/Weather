@@ -57,12 +57,17 @@ const DayInfo = ({ city }: Props) => {
         setIsCityToEdit(false);
     };
 
+    const keyboardSwitch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        event.key === "Enter" && searchCity();
+        event.key === "Escape" && cancelSearching(event);
+    };
+
     return (
         <div className={`w-[100%] flex flex-col items-center`}>
             <div className={`flex flex-col gap-[10px]`}>
                 <div
-                    className={`flex transition duration-300 ease-in-out placeholder:text-gray-400 rounded-2xl border border-neutral-300 ${
-                        isCityToEdit && "border-black"
+                    className={`flex transition duration-300 ease-in-out placeholder:text-gray-400 rounded-2xl border ${
+                        isCityToEdit ? "border-neutral-300" : "border-gray-400"
                     }`}
                 >
                     <input
@@ -73,14 +78,13 @@ const DayInfo = ({ city }: Props) => {
                         onFocus={() => setIsCityToEdit((prev) => !prev)}
                         onBlur={() => setIsCityToEdit((prev) => !prev)}
                         onChange={(event) => setNewCity(event.target.value)}
-                        onKeyDown={(event) => {
-                            event.code === "Enter" && searchCity();
-                            event.code === "Escape" && cancelSearching(event);
-                        }}
+                        onKeyDown={(event) => keyboardSwitch(event)}
                     />
                     <div
-                        className={`flex justify-center items-center border-l-[1px] w-[48px] aspect-square border-neutral-300 transition duration-300 ease-in-out ${
-                            isCityToEdit && "border-black"
+                        className={`flex justify-center items-center border-l-[1px] w-[48px] aspect-square transition duration-300 ease-in-out ${
+                            isCityToEdit
+                                ? "border-neutral-300"
+                                : "border-gray-400"
                         }`}
                     >
                         <Icon
